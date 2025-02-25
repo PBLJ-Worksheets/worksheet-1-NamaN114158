@@ -1,0 +1,105 @@
+import java.util.Scanner;
+
+class Staff {
+    private int id;
+    private String name;
+    private String department;
+    private double salary;
+
+    public Staff(int id, String name, String department, double salary) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+        this.salary = salary;
+    }
+
+    public void showDetails() {
+        System.out.printf("ID: %d, Name: %s, Department: %s, Salary: %.2f\n", id, name, department, salary);
+    }
+}
+
+public class StaffManagement {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter the number of staff members: ");
+        int totalStaff = input.nextInt();
+        input.nextLine();
+
+        if (totalStaff <= 0) {
+            System.out.println("Invalid number of staff members.");
+            input.close();
+            return;
+        }
+
+        Staff[] staffList = new Staff[totalStaff];
+        int currentIndex = 0;
+
+        while (true) {
+            System.out.println("\nOptions:");
+            System.out.println("1. Register Staff");
+            System.out.println("2. Show All Staff");
+            System.out.println("3. Exit Program");
+            System.out.print("Select an option: ");
+            
+            if (!input.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                input.next(); 
+                continue;
+            }
+            
+            int option = input.nextInt();
+            input.nextLine();
+
+            switch (option) {
+                case 1:
+                    if (currentIndex < totalStaff) {
+                        System.out.print("Enter Staff ID: ");
+                        while (!input.hasNextInt()) {
+                            System.out.println("Invalid input. Please enter a valid ID.");
+                            input.next();
+                        }
+                        int id = input.nextInt();
+                        input.nextLine(); 
+
+                        System.out.print("Enter Staff Name: ");
+                        String name = input.nextLine().trim();
+
+                        System.out.print("Enter Staff Department: ");
+                        String department = input.nextLine().trim();
+
+                        System.out.print("Enter Staff Salary: ");
+                        while (!input.hasNextDouble()) {
+                            System.out.println("Invalid input. Please enter a valid salary.");
+                            input.next();
+                        }
+                        double salary = input.nextDouble();
+                        input.nextLine(); 
+
+                        staffList[currentIndex] = new Staff(id, name, department, salary);
+                        currentIndex++;
+                        System.out.println("Staff registered successfully!");
+                    } else {
+                        System.out.println("Staff list is full!");
+                    }
+                    break;
+                case 2:
+                    if (currentIndex == 0) {
+                        System.out.println("No staff members registered.");
+                    } else {
+                        System.out.println("\nStaff Information:");
+                        for (int i = 0; i < currentIndex; i++) {
+                            staffList[i].showDetails();
+                        }
+                    }
+                    break;
+                case 3:
+                    System.out.println("Terminating program. Goodbye!");
+                    input.close();
+                    return;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+            }
+        }
+    }
+}
